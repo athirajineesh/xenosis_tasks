@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="banner">
+                <div class="banner-text">
+                    <h1>TODO APP</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <!-- Completed Tasks Section on the Left -->
+        <div class="col-md-6">
+            <h3>Completed Tasks</h3>
+            {% for task in completed_tasks %}
+            <div class="shadow card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ task.task }}</h5>
+                    <p>
+                        Priority: <b>{{ task.priority }}</b><br>
+                        Deadline: <b>{{ task.date }}</b>
+                    </p>
+
+                    <a class="btn btn-danger" href="{% url 'todoapp:deletetask' task.id %}">Delete</a>
+                </div>
+            </div>
+            <br>
+            {% empty %}
+            <p>No completed tasks.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Task Adding and To-Do Tasks Section on the Right -->
+        <div class="col-md-6">
+            <div class="p-3 shadow mb-3">
+                <h3>Add New Task</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="task" placeholder="Task Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="priority" placeholder="Priority" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="date" class="form-control" name="date" placeholder="Enter Deadline" required>
+                    </div>
+                    <input type="submit" class="btn btn-success" value="Add Task">
+                </form>
+            </div>
+
+            <h3>Tasks to be done</h3>
+            {% for task in pending_tasks %}
+            <div class="shadow card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ task.task }}</h5>
+                    <p>
+                        Priority: <b>{{ task.priority }}</b><br>
+                        Deadline: <b>{{ task.date }}</b>
+                    </p>
+                    <form action="{% url 'todoapp:completedtask' task.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-success" value="Done">
+                    </form>
+                    <a class="btn btn-warning" href="{% url 'todoapp:updatetask' task.id %}">Update</a>
+                    <a class="btn btn-danger" href="{% url 'todoapp:deletetask' task.id %}">Delete</a>
+                </div>
+            </div>
+            <br>
+            {% empty %}
+            <p>No pending tasks.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
