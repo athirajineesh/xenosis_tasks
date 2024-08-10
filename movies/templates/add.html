@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block body %}
+<form method="POST" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="Enter Movie Name"><br>
+    <input type="text" name="brief" placeholder="Enter Movie Description"><br>
+    <input type="text" name="year" placeholder="Enter Movie Year"><br>
+    <input type="file" name="image"><br>
+    <input type="submit" style="background-color: blue; color: White; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px;cursor: pointer;>
+    <a href="{% url 'moviesapp:index'  %}" class="btn btn-warning"></a>
+    <a href="{% url 'moviesapp:index'  %}" class="btn btn-warning">Home</a>
+</form>
+{% endblock %}
